@@ -10,21 +10,23 @@ import {
 } from '@chakra-ui/react';
 import { EmailIcon } from '@chakra-ui/icons';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { useToast } from '@chakra-ui/react';
+import { useLogin } from '@/hooks/useLogin';
 interface formInput {
 	user: { username: string; password: string };
 }
 export default function Login() {
 	const router = useRouter();
 	const toast = useToast();
+	const { login, loading } = useLogin();
 	const [formData, setFormData] = useState<formInput>({
 		user: {
 			username: '',
 			password: '',
 		},
 	});
-	const handleSubmit = (event: any): void => {
+	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault();
 		if (formData.user.username.trim() === '') {
 			// alert('User name cannot be empty');
@@ -51,9 +53,31 @@ export default function Login() {
 			});
 			return;
 		}
-		console.log(formData);
+		console.log(formData.user);
+		await login(formData.user);
+		// console.log(loading);
+		// if (!loading) {
+		// 	if (error) {
+		// 		toast({
+		// 			title: 'Error',
+		// 			description: `${successMessage}`,
+		// 			status: 'error',
+		// 			duration: 2000,
+		// 			isClosable: true,
+		// 		});
+		// 	}
+		// 	if (!error) {
+		// 		toast({
+		// 			title: 'Success',
+		// 			description: `${successMessage}`,
+		// 			status: 'success',
+		// 			duration: 2000,
+		// 			isClosable: true,
+		// 		});
+		// 	}
+		// }
 	};
-	const handleChange = (event: any): void => {
+	const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
 		event.preventDefault();
 		console.log('dp');
 		setFormData({
@@ -72,6 +96,7 @@ export default function Login() {
 								value={formData.user.username}
 								required={true}
 								onChange={handleChange}
+								isRequired={true}
 							/>
 						</InputGroup>
 
@@ -83,6 +108,7 @@ export default function Login() {
 								placeholder="Password"
 								value={formData.user.password}
 								onChange={handleChange}
+								isRequired={true}
 							/>
 						</InputGroup>
 					</Stack>
@@ -92,9 +118,9 @@ export default function Login() {
 						mt={10}
 						width={'100%'}
 						colorScheme="teal"
-						isLoading={false}
+						isLoading={Boolean(loading)}
 						onClick={handleSubmit}
-						loadingText={'Logging..'}
+						loadingText={'Logging...'}
 					>
 						Login
 					</Button>

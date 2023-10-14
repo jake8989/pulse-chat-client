@@ -13,6 +13,7 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { useToast } from '@chakra-ui/react';
 import { set } from 'mongoose';
+import { useRegister } from '@/hooks/useRegister';
 interface formInput {
 	user: {
 		username: string;
@@ -23,6 +24,7 @@ interface formInput {
 }
 export default function Register() {
 	const router = useRouter();
+	const { register, loading, error } = useRegister();
 	const toast = useToast();
 	const [formData, setFormData] = useState<formInput>({
 		user: {
@@ -32,7 +34,7 @@ export default function Register() {
 			confirmpassword: '',
 		},
 	});
-	const handleSubmit = (event: any): void => {
+	const handleSubmit = async (event: any) => {
 		// event.preventDefault();
 		console.log('Hii');
 		if (formData.user.username.trim() === '') {
@@ -88,6 +90,7 @@ export default function Register() {
 			return;
 		}
 		console.log(formData);
+		await register(formData.user);
 	};
 	const handleChange = (event: any): void => {
 		event.preventDefault();
@@ -106,8 +109,9 @@ export default function Register() {
 								name="username"
 								placeholder="Username"
 								value={formData.user.username}
-								required={true}
+								// required={true}
 								onChange={handleChange}
+								isRequired={true}
 							/>
 						</InputGroup>
 
@@ -116,8 +120,9 @@ export default function Register() {
 								name="email"
 								placeholder="Email"
 								value={formData.user.email}
-								required={true}
+								// required={true}
 								onChange={handleChange}
+								isRequired={true}
 							/>
 						</InputGroup>
 						<InputGroup>
@@ -125,8 +130,9 @@ export default function Register() {
 								name="password"
 								placeholder="Password"
 								value={formData.user.password}
-								required={true}
+								// required={true}
 								onChange={handleChange}
+								isRequired={true}
 							/>
 						</InputGroup>
 						<InputGroup>
@@ -134,8 +140,9 @@ export default function Register() {
 								name="confirmpassword"
 								placeholder="Confirm Password"
 								value={formData.user.confirmpassword}
-								required={true}
+								// required={true}
 								onChange={handleChange}
+								isRequired={true}
 							/>
 						</InputGroup>
 					</Stack>
@@ -145,8 +152,8 @@ export default function Register() {
 						mt={10}
 						width={'100%'}
 						colorScheme="teal"
-						isLoading={false}
-						loadingText={'submmitting'}
+						isLoading={Boolean(loading)}
+						loadingText={'submitting...'}
 						onClick={handleSubmit}
 					>
 						Submit
