@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useToast } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+// import { useAuthContext } from './useAuthContext';
 interface User {
 	user: {
 		token: string;
@@ -16,6 +17,7 @@ export const useRegister = () => {
 	const [error, setError] = useState<Boolean>(false);
 	// console.log(user);
 	const [successMessage, seteSuccessMessage] = useState<string>('');
+	// const { dispatch } = useAuthContext();
 	const register = async (postData: {
 		username: string;
 		email: string;
@@ -43,6 +45,8 @@ export const useRegister = () => {
 						duration: 2000,
 						isClosable: true,
 					});
+					localStorage.setItem('user', JSON.stringify(response.data));
+					// dispatch({ type: 'LOGIN', payload: response.data });
 					router.push('/dashboard');
 				} else {
 					setError(true);

@@ -5,6 +5,7 @@ import styles from '@/styles/Home.module.css';
 import { Heading, Text, Container } from '@chakra-ui/react';
 import { LinkIcon } from '@chakra-ui/icons';
 import User from '@/components/user';
+import LoadingScreen from '@/components/loadinScreen';
 const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
@@ -20,6 +21,7 @@ export default function Home() {
 				<Container mt={20}>
 					<User></User>
 				</Container>
+				<LoadingScreen></LoadingScreen>
 			</main>
 		</>
 	);

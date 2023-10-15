@@ -2,24 +2,17 @@ import React, { useState } from 'react';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useToast } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-interface User {
-	user: {
-		token: string;
-	};
-}
-
+import { useUser } from '@/context/UserContext';
 export const useLogin = () => {
 	const toast = useToast();
 	const router = useRouter();
-	const [user, setUser] = useState<User>({ user: { token: '' } });
 	const [loading, setLoading] = useState<Boolean>(false);
 	const [error, setError] = useState<Boolean>(false);
-	// console.log(user);
 	const [successMessage, seteSuccessMessage] = useState<string>('');
+	const { loginUser } = useUser();
 	const login = async (postData: { username: string; password: string }) => {
 		console.log('Logging');
 		setLoading(true);
-		// console.log(process.env.NEXT_PUBLIC_BACKEND);
 		axios
 			.post(`${process.env.NEXT_PUBLIC_BACKEND}/api/v1/users/login`, postData)
 			.then((response: AxiosResponse) => {
@@ -36,6 +29,7 @@ export const useLogin = () => {
 						duration: 2000,
 						isClosable: true,
 					});
+					loginUser(response.data);
 					router.push('/dashboard');
 				} else {
 					setError(true);

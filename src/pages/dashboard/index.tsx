@@ -8,22 +8,55 @@ import {
 	Button,
 	Box,
 	useStatStyles,
+	Toast,
+	useTab,
+	CircularProgress,
 } from '@chakra-ui/react';
 import { LinkIcon } from '@chakra-ui/icons';
 import User from '@/components/user';
 const inter = Inter({ subsets: ['latin'] });
 import { BiUser } from 'react-icons/bi';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
+import { useToast } from '@chakra-ui/react';
+import { Router } from 'next/router';
+import { useRouter } from 'next/router';
+import { useSetAvtar } from '@/hooks/useSetAvtar';
+
 export default function dashBoard() {
+	// const user = useContext(AuthContext);
 	const [preview, setPreview] = useState<string>('');
-	const [avtar, setAvtar] = useState<any>();
+	const [avtar64, setAvtar64] = useState<any>();
+	const toast = useToast();
+	const router = useRouter();
+
+	useEffect(() => {
+		if (!localStorage.getItem('user')) {
+			toast({
+				title: 'Error',
+				description: `User Not Logged In`,
+				status: 'error',
+				duration: 2000,
+				isClosable: true,
+			});
+			// return;
+			router.push('/');
+		}
+	});
+
+	const { setAvatar, loading, error } = useSetAvtar();
+	// //////////////////user
+	// console.log('dashboard', user);
+	// //////////////////////
+	// console.log(user.user);
+
 	const handleImage = (event: ChangeEvent<HTMLInputElement>) => {
 		event.preventDefault();
 		if (event.target.files === null) {
 			return;
 		}
 		const file = event.target.files[0];
+
 		if (file.size > 1024 * 100) {
 			return alert('File size greater than 100KB');
 		}
@@ -32,16 +65,19 @@ export default function dashBoard() {
 		reader.readAsDataURL(file);
 		setPreview(URL.createObjectURL(file));
 		reader.onload = () => {
-			console.log(reader.result);
-			setAvtar(reader.result);
+			console.log('67', reader.result);
+			setAvtar64(reader.result);
 		};
 		reader.onerror = () => {
 			console.log(reader.error?.message);
 			return alert('Error In converting File into Base 64');
 		};
 	};
-	const handleSubmit = (event: React.FormEvent) => {
+	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault();
+		console.log(avtar64);
+		await setAvatar(avtar64);
+		// console.log(loading);
 	};
 	return (
 		<>
@@ -101,7 +137,7 @@ export default function dashBoard() {
 						rightIcon={<ArrowForwardIcon />}
 						onClick={handleSubmit}
 						type="submit"
-						isLoading={true}
+						isLoading={Boolean(loading)}
 					>
 						Continue
 					</Button>
