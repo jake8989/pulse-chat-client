@@ -12,6 +12,11 @@ export default function Home() {
 	return (
 		<>
 			<main>
+				<div>
+					<Head>
+						<title>PulseChat</title>
+					</Head>
+				</div>
 				<Container mt={7}>
 					<Heading textAlign={'center'}>
 						PulseChat <LinkIcon w={6} h={6}></LinkIcon>{' '}

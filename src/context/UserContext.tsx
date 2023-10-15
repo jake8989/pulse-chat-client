@@ -11,6 +11,7 @@ interface User {
 	message: string;
 	token: string;
 	user: string;
+	// step: string;
 }
 
 interface UserContextProps {

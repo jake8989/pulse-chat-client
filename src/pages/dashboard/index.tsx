@@ -22,14 +22,19 @@ import { useToast } from '@chakra-ui/react';
 import { Router } from 'next/router';
 import { useRouter } from 'next/router';
 import { useSetAvtar } from '@/hooks/useSetAvtar';
-
+import { useUser } from '@/context/UserContext';
+import LoadingScreen from '@/components/loadinScreen';
 export default function dashBoard() {
 	// const user = useContext(AuthContext);
 	const [preview, setPreview] = useState<string>('');
 	const [avtar64, setAvtar64] = useState<any>();
 	const toast = useToast();
 	const router = useRouter();
-
+	const { user } = useUser();
+	console.log(user?.user);
+	// if (!user) {
+	// 	return <LoadingScreen></LoadingScreen>;
+	// }
 	useEffect(() => {
 		if (!localStorage.getItem('user')) {
 			toast({
