@@ -31,23 +31,34 @@ export default function dashBoard() {
 	const toast = useToast();
 	const router = useRouter();
 	const { user } = useUser();
-	console.log(user?.user);
+	console.log('Dashboard', user);
 	// if (!user) {
 	// 	return <LoadingScreen></LoadingScreen>;
 	// }
+
 	useEffect(() => {
 		if (!localStorage.getItem('user')) {
 			toast({
 				title: 'Error',
 				description: `User Not Logged In`,
 				status: 'error',
-				duration: 2000,
+				duration: 1000,
 				isClosable: true,
 			});
 			// return;
 			router.push('/');
 		}
-	});
+		if (user?.step === '/chat') {
+			toast({
+				title: 'Loading',
+				description: `Already Setted Avtar Routing to Chat`,
+				status: 'warning',
+				duration: 1000,
+				isClosable: true,
+			});
+			router.push('/chat');
+		}
+	}, []);
 
 	const { setAvatar, loading, error } = useSetAvtar();
 	// //////////////////user

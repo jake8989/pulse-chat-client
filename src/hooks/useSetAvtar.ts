@@ -10,7 +10,7 @@ export const useSetAvtar = () => {
 	const [error, setError] = useState<Boolean>(false);
 	const [message, setMessage] = useState<string>('');
 	const router = useRouter();
-	const { user } = useUser();
+	const { user, loginUser } = useUser();
 	// const user = useContext(AuthContext);
 	// const user;
 	// console.log('from the setAvtar', user);
@@ -19,6 +19,7 @@ export const useSetAvtar = () => {
 			setLoading(true);
 		} else setLoading(false);
 	}, [user]);
+
 	let username = user?.user;
 	console.log(username);
 	const setAvatar = async (profile: string) => {
@@ -27,7 +28,7 @@ export const useSetAvtar = () => {
 
 		const postData = {
 			profile: profile,
-			username: 'user',
+			username: username,
 		};
 		console.log('postData', postData);
 		axios
@@ -47,6 +48,16 @@ export const useSetAvtar = () => {
 					duration: 2000,
 					isClosable: true,
 				});
+				// loginUser()
+				const storedData = localStorage.getItem('user');
+				// if(!storedData){
+
+				// }
+				if (storedData) {
+					const data: Record<string, any> = JSON.parse(storedData);
+					data.step = '/chat';
+					localStorage.setItem('user', JSON.stringify(data));
+				}
 				router.push('/chat');
 			})
 			.catch((error: any) => {

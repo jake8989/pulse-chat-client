@@ -21,7 +21,7 @@ export default function Home() {
 					<Heading textAlign={'center'}>
 						PulseChat <LinkIcon w={6} h={6}></LinkIcon>{' '}
 					</Heading>
-					<Text textAlign={'center'}>Chat in groups or with friend's</Text>
+					<Text textAlign={'center'}>Chat in groups with friend's</Text>
 				</Container>
 				<Container mt={20}>
 					<User></User>

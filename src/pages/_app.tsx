@@ -17,9 +17,14 @@ const theme = extendTheme({ colors });
 export default function App({ Component, pageProps }: AppProps) {
 	return (
 		<UserProvider>
+			<div>
+				<Head>
+					<title>PulseChat</title>
+				</Head>
+			</div>
 			<ChakraProvider theme={theme}>
 				{/* <Head></Head> */}
-				<Component {...pageProps} />;
+				<Component {...pageProps} />
 			</ChakraProvider>
 		</UserProvider>
 	);

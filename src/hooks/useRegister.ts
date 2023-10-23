@@ -64,7 +64,7 @@ export const useRegister = () => {
 				console.log('Fail\n');
 				setError(true);
 				setLoading(false);
-				console.log(error.response.data.message);
+				// console.log(error.response.data.message);
 
 				if (!error.response) {
 					toast({
