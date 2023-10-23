@@ -4,6 +4,7 @@ import { useToast } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useUser } from '@/context/UserContext';
 // import { useAuthContext } from './useAuthContext';
+import cookie from 'js-cookie';
 interface User {
 	user: {
 		token: string;
@@ -47,6 +48,7 @@ export const useRegister = () => {
 						duration: 2000,
 						isClosable: true,
 					});
+					cookie.set('token', response.data.token);
 					loginUser(response.data);
 					router.push('/dashboard');
 				} else {

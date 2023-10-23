@@ -4,6 +4,7 @@ import axios, { AxiosResponse } from 'axios';
 // import { AuthContext } from '@/context/AuthContext';
 import { useRouter } from 'next/router';
 import { useUser } from '@/context/UserContext';
+import cookie from 'js-cookie';
 export const useSetAvtar = () => {
 	const toast = useToast();
 	const [loading, setLoading] = useState<Boolean>(false);
@@ -40,7 +41,9 @@ export const useSetAvtar = () => {
 				console.log('Success\n');
 				setLoading(false);
 				setError(false);
-				console.log(response.data);
+				// console.log(profile);
+				// cookie.set('userprofile', response.data.profile, { expires: 7 });
+				// console.log(response.data);
 				toast({
 					title: 'Sucess',
 					description: `${response.data.message}`,
@@ -53,6 +56,7 @@ export const useSetAvtar = () => {
 				// if(!storedData){
 
 				// }
+				// cookie.set('user-profile', profile);
 				if (storedData) {
 					const data: Record<string, any> = JSON.parse(storedData);
 					data.step = '/chat';
@@ -62,6 +66,7 @@ export const useSetAvtar = () => {
 			})
 			.catch((error: any) => {
 				console.log('fail\n');
+
 				setError(true);
 				setLoading(false);
 				if (!error.response) {

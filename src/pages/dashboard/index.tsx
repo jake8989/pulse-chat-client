@@ -48,16 +48,6 @@ export default function dashBoard() {
 			// return;
 			router.push('/');
 		}
-		if (user?.step === '/chat') {
-			toast({
-				title: 'Loading',
-				description: `Already Setted Avtar Routing to Chat`,
-				status: 'warning',
-				duration: 1000,
-				isClosable: true,
-			});
-			router.push('/chat');
-		}
 	}, []);
 
 	const { setAvatar, loading, error } = useSetAvtar();

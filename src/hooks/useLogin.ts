@@ -3,6 +3,7 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useToast } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useUser } from '@/context/UserContext';
+import cookie from 'js-cookie';
 export const useLogin = () => {
 	const toast = useToast();
 	const router = useRouter();
@@ -29,6 +30,7 @@ export const useLogin = () => {
 						duration: 2000,
 						isClosable: true,
 					});
+					cookie.set('token', response.data.token, { expires: 7 });
 					loginUser(response.data);
 					router.push('/dashboard');
 				} else {

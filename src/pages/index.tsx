@@ -26,7 +26,7 @@ export default function Home() {
 				<Container mt={20}>
 					<User></User>
 				</Container>
-				<LoadingScreen></LoadingScreen>
+				{/* <LoadingScreen></LoadingScreen> */}
 			</main>
 		</>
 	);
