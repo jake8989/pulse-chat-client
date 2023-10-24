@@ -10,7 +10,15 @@ interface usersFriends {
 }
 const useGetFriends = () => {
 	const [loadingI, setLoading] = useState<Boolean>(false);
-	const [usersFriends, setUsersFriends] = useState<usersFriends[] | null>();
+	const [usersFriends, setUsersFriends] = useState<usersFriends[]>([
+		{
+			_id: '',
+			friendEmail: '',
+			friendId: '',
+			friendProfile: '',
+			friendUsername: '',
+		},
+	]);
 	const getFriends = async () => {
 		setLoading(true);
 		axios
