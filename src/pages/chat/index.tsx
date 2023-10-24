@@ -26,6 +26,7 @@ import useCreateInvite from '@/hooks/useCreateInvite';
 import SentInvitations from '@/components/sentInvitaions';
 import ReceivedInvitations from '@/components/receivedinvitaions';
 import { useLogout } from '@/hooks/useLogout';
+import cookie from 'js-cookie';
 export default function Chat() {
 	const router = useRouter();
 	const toast = useToast();
@@ -53,6 +54,21 @@ export default function Chat() {
 	// 		}
 	// 	}
 	// }, []);
+	useEffect(() => {
+		const url = cookie.get('user_step');
+		if (url) {
+			router.push(url);
+		} else {
+			toast({
+				title: 'Error',
+				description: `User Not Logged In`,
+				status: 'error',
+				duration: 1000,
+				isClosable: true,
+			});
+			router.push('/');
+		}
+	}, []);
 	useEffect(() => {
 		const hd = async () => {
 			await GetAllSentInvitations();
