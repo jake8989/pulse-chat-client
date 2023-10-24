@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { Text, Avatar, Spinner, Button } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
 import useAcceptInvite from '@/hooks/useAcceptInvite';
-import useGetAllreceivedInvitation from '@/hooks/useGetAllReceivedInvitation';
+import useGetAllreceivedInvitation from '@/hooks/useGetAllreceivedInvitation';
 import useDeleteInvite from '@/hooks/useDeleteInvite';
 // interface receivedInvitaionsProps {
 // 	receivedInvitaions: Array<{
