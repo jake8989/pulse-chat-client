@@ -24,6 +24,7 @@ import { useRouter } from 'next/router';
 import { useSetAvtar } from '@/hooks/useSetAvtar';
 import { useUser } from '@/context/UserContext';
 import LoadingScreen from '@/components/loadinScreen';
+import cookie from 'js-cookie';
 export default function dashBoard() {
 	// const user = useContext(AuthContext);
 	const [preview, setPreview] = useState<string>('');
@@ -37,6 +38,10 @@ export default function dashBoard() {
 	// }
 
 	useEffect(() => {
+		let step = cookie.get('user_step');
+		if (step) {
+			router.push(step);
+		}
 		if (!localStorage.getItem('user')) {
 			toast({
 				title: 'Error',

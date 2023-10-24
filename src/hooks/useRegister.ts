@@ -51,6 +51,7 @@ export const useRegister = () => {
 					cookie.set('token', response.data.token);
 					loginUser(response.data);
 					router.push('/dashboard');
+					cookie.set('user_step', response.data.step, { expires: 7 });
 				} else {
 					setError(true);
 					toast({

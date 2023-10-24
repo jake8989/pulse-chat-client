@@ -20,14 +20,25 @@ import useGetUser from '@/hooks/useGetAllUser';
 import { Search2Icon } from '@chakra-ui/icons';
 import { Spinner } from '@chakra-ui/react';
 // interface User {}
+import useGetAllSentInvitations from '@/hooks/useGetAllSentInvitations';
+import useGetAllreceivedInvitation from '@/hooks/useGetAllreceivedInvitation';
 import useCreateInvite from '@/hooks/useCreateInvite';
+import SentInvitations from '@/components/sentInvitaions';
+import ReceivedInvitations from '@/components/receivedinvitaions';
+import { useLogout } from '@/hooks/useLogout';
 export default function Chat() {
 	const router = useRouter();
 	const toast = useToast();
+	const [counter, setCounter] = useState<number>(0);
 	const [serachUser, setsearchUser] = useState<string>('');
 	const { user } = useUser();
 	let { getUser, loading, ruser } = useGetUser();
 	let { createInvite, loadingI } = useCreateInvite();
+	let { GetAllSentInvitations, sentInvitaions, loadingII } =
+		useGetAllSentInvitations();
+	let { GetAllreceivedInvitations, receivedInvitaions, loadingIII } =
+		useGetAllreceivedInvitation();
+	let { logout } = useLogout();
 	// useEffect(() => {
 	// 	if (typeof window !== 'undefined') {
 	// 		if (user?.step !== '/chat') {
@@ -42,6 +53,16 @@ export default function Chat() {
 	// 		}
 	// 	}
 	// }, []);
+	useEffect(() => {
+		const hd = async () => {
+			await GetAllSentInvitations();
+		};
+		const hd1 = async () => {
+			await GetAllreceivedInvitations();
+		};
+		hd();
+		hd1();
+	}, [counter]);
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		event.preventDefault();
 		const vl = event.target.value.trim();
@@ -64,11 +85,35 @@ export default function Chat() {
 		// setsearchUser('');
 		await getUser(serachUser);
 	};
+	const getListAndCreateInvitaion = async () => {
+		await createInvite(ruser._id);
+		await GetAllSentInvitations();
+		setCounter((prev) => prev + 1);
+	};
+	const handleLogout = () => {
+		logout();
+	};
 	// console.log(user);
 	return (
 		<>
 			<Heading textAlign={'center'} mt={'30px'}>
 				PulseChat
+				{/* <Box> */}
+				<Box position={'absolute'} right={'10px'}>
+					<Button
+						colorScheme="teal"
+						onClick={() => router.push('/chat/friends')}
+					>
+						Go To Friends
+					</Button>
+					<Button ml={'10px'} colorScheme="teal">
+						{user?.user}
+					</Button>
+					<Button ml={'10px'} onClick={handleLogout}>
+						Logout
+					</Button>
+				</Box>
+				{/* </Box> */}
 			</Heading>
 			<Box
 				className="chat-container"
@@ -83,7 +128,9 @@ export default function Chat() {
 					height={'100%'}
 					// background={'orange.400'}
 				>
-					<Text fontSize={'20px'}>Search User With Username</Text>
+					<Text mt={'40px'} fontSize={'20px'}>
+						Search User With Username
+					</Text>
 					<Box
 						mt={'40px'}
 						display={'flex'}
@@ -162,9 +209,7 @@ export default function Chat() {
 										<Box display={'flex'}>
 											<Button
 												colorScheme={'teal'}
-												onClick={async () => {
-													await createInvite(ruser._id);
-												}}
+												onClick={getListAndCreateInvitaion}
 												isLoading={Boolean(loadingI)}
 											>
 												Send Invite{' '}
@@ -186,6 +231,7 @@ export default function Chat() {
 					flex={'3'}
 					height={'100%'}
 					justifyContent={'flex-end'}
+					mt={'40px'}
 					// background={'orange.400'}
 				>
 					<Text fontSize={'20px'} textAlign={'center'}>
@@ -195,12 +241,20 @@ export default function Chat() {
 						<Tabs variant="soft-rounded" colorScheme="green" isFitted>
 							<TabList>
 								<Tab>Sent Invitations</Tab>
-								<Tab>Recieved Invitaions</Tab>
+								<Tab>received Invitaions</Tab>
 							</TabList>
 
 							<TabPanels>
-								<TabPanel>{/* <p>one!</p> */}</TabPanel>
-								<TabPanel>{/* <p>two!</p> */}</TabPanel>
+								<TabPanel>
+									<SentInvitations
+										sentInvitaions={sentInvitaions}
+										loadingI={Boolean(loadingII)}
+										key={counter}
+									></SentInvitations>
+								</TabPanel>
+								<TabPanel>
+									<ReceivedInvitations key={counter}></ReceivedInvitations>
+								</TabPanel>
 							</TabPanels>
 						</Tabs>
 					</Container>

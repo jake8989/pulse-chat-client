@@ -46,13 +46,13 @@ const useGetUser = () => {
 					return;
 				}
 
-				const recievedUser: User = response.data;
-				if (user?.user === recievedUser.username) {
+				const receivedUser: User = response.data;
+				if (user?.user === receivedUser.username) {
 					setrUser({ _id: '', username: '', email: '', profile: '' });
 					setLoading(false);
 					return;
 				}
-				setrUser(recievedUser);
+				setrUser(receivedUser);
 				setLoading(false);
 				console.log(response.data);
 				const foundUser: User = response.data;

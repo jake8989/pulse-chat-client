@@ -62,6 +62,7 @@ export const useSetAvtar = () => {
 					data.step = '/chat';
 					localStorage.setItem('user', JSON.stringify(data));
 				}
+				cookie.set('user_step', response.data.step, { expires: 7 });
 				router.push('/chat');
 			})
 			.catch((error: any) => {
