@@ -1,5 +1,5 @@
 import { Main } from 'next/document';
-import React, { useEffect } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import {
 	Card,
 	CardHeader,
@@ -16,6 +16,9 @@ import cookies from 'js-cookie';
 import useGetChats from '@/hooks/useGetChats';
 import chatStyles from '../styles/ChatBox.module.css';
 import { useRef } from 'react';
+import axios from 'axios';
+import cookie from 'js-cookie';
+import { useToast } from '@chakra-ui/react';
 const customTheme = extendTheme({
 	styles: {
 		global: {
@@ -34,6 +37,9 @@ interface chatProps {
 }
 const Chat: React.FC<chatProps> = ({ chatId }) => {
 	const { getChats, messages, loading } = useGetChats();
+	const toast = useToast();
+	const [newMessage, setNewMessage] = useState<string>('');
+	const [ll, setLL] = useState<boolean>(false);
 	useEffect(() => {
 		console.log(chatId);
 	}, [chatId]);
@@ -43,13 +49,63 @@ const Chat: React.FC<chatProps> = ({ chatId }) => {
 		};
 		chats();
 	}, [chatId]);
-	if (loading) {
-		return <Spinner></Spinner>;
-	}
+	const messageHandler = (event: ChangeEvent<HTMLInputElement>) => {
+		event.preventDefault();
+		setNewMessage(event.target.value);
+	};
+	const messageSendButtonHandler = async (event: React.FormEvent) => {
+		event.preventDefault();
+		if (newMessage.trim() === '') {
+			toast({
+				title: 'Warning',
+				description: `Empty Message`,
+				status: 'warning',
+				duration: 2000,
+				isClosable: false,
+			});
+			return;
+		}
+		const postData = {
+			chatId: chatId,
+			content: newMessage,
+		};
+		setLL(true);
+		try {
+			const result = await axios.post(
+				`${process.env.NEXT_PUBLIC_BACKEND}/auth/v1/chat/save-chat`,
+				postData,
+				{
+					headers: {
+						Authorization: `Bearer ${cookie.get('token')}`,
+					},
+				}
+			);
+			setLL(false);
+			setNewMessage('');
+			await getChats(chatId);
+			console.log(result.data);
+		} catch (error) {
+			setNewMessage('');
+			setLL(false);
+			console.log(error);
+		}
+	};
+	const chatRef = useRef<HTMLDivElement>(null);
+	useEffect(() => {
+		if (chatRef.current) {
+			chatRef.current.scrollTop = chatRef.current.scrollHeight;
+		}
+	}, [messages]);
+
 	return (
 		<ChakraProvider theme={customTheme}>
-			<Box display={'flex'} justifyContent={'center'} mt={'50px'}>
-				<Card width={'84%'} maxHeight={'500px'} overflowY={'scroll'}>
+			<Box display={'flex'} justifyContent={'center'} mt={'20px'}>
+				<Card
+					width={'84%'}
+					maxHeight={'500px'}
+					overflowY={'scroll'}
+					ref={chatRef}
+				>
 					<Text textAlign={'center'} fontSize={'12px'}>
 						{' '}
 						ChatId: {chatId}
@@ -103,8 +159,15 @@ const Chat: React.FC<chatProps> = ({ chatId }) => {
 					flexDirection={'row'}
 					justifyContent={'center'}
 				>
-					<Input placeholder="Type Message..."></Input>
-					<Button>Send</Button>
+					<Input
+						placeholder="Type Message..."
+						onChange={messageHandler}
+						value={newMessage}
+					></Input>
+					<Button onClick={messageSendButtonHandler} isLoading={ll}>
+						{' '}
+						Send
+					</Button>
 				</Box>
 			</Box>
 		</ChakraProvider>
