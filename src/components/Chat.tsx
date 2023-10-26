@@ -228,13 +228,18 @@ const Chat: React.FC<chatProps> = ({
 					display={'flex'}
 					flexDirection={'row'}
 					justifyContent={'center'}
+					as="form"
 				>
 					<Input
 						placeholder="Type Message..."
 						onChange={messageHandler}
 						value={newMessage}
 					></Input>
-					<Button onClick={messageSendButtonHandler} isLoading={ll}>
+					<Button
+						onClick={messageSendButtonHandler}
+						isLoading={ll}
+						type="submit"
+					>
 						{' '}
 						Send
 					</Button>

@@ -265,11 +265,13 @@ export default function Chat() {
 									<SentInvitations
 										sentInvitaions={sentInvitaions}
 										loadingI={Boolean(loadingII)}
-										key={counter}
+										key={new Date().getFullYear()}
 									></SentInvitations>
 								</TabPanel>
 								<TabPanel>
-									<ReceivedInvitations key={counter}></ReceivedInvitations>
+									<ReceivedInvitations
+										key={new Date().getMilliseconds()}
+									></ReceivedInvitations>
 								</TabPanel>
 							</TabPanels>
 						</Tabs>
