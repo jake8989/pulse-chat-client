@@ -21,7 +21,7 @@ const useCreateInvite = () => {
 			)
 			.then((response: AxiosResponse) => {
 				setLoading(false);
-				console.log(response);
+				// console.log(response);
 				toast({
 					title: 'Success',
 					description: `${response.data.message}`,
@@ -35,7 +35,7 @@ const useCreateInvite = () => {
 				console.log(err);
 				toast({
 					title: 'Error',
-					description: `${err.response.data.message}`,
+					description: `${err.response?.data.message}`,
 					status: 'error',
 					duration: 2000,
 					isClosable: true,

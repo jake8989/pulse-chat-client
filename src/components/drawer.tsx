@@ -15,17 +15,28 @@ import {
 	Spinner,
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useGetFriends from '@/hooks/useGetFriends';
 import cookie from 'js-cookie';
+import socket from '@/socket-manager/socket';
 interface chatSelectionProps {
 	onChatSelected: (chatId: string) => void;
 	onFriendSelected: (friend_id: string, friend_username: string) => void;
+}
+interface onLineUsers {
+	user_id: string;
+	socket_id: string;
 }
 const DrawerExample: React.FC<chatSelectionProps> = ({
 	onChatSelected,
 	onFriendSelected,
 }) => {
+	const [onlineUsers, setOnlineUsers] = useState<onLineUsers[]>([
+		{
+			user_id: '',
+			socket_id: '',
+		},
+	]);
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const btnRef = React.useRef<HTMLButtonElement | null>(null);
 	const { getFriends, loadingI, usersFriends } = useGetFriends();
@@ -35,6 +46,13 @@ const DrawerExample: React.FC<chatSelectionProps> = ({
 		};
 		hd();
 	}, []);
+	const [ct, setCt] = useState<number>(0);
+	const userId = cookie.get('user_id');
+	useEffect(() => {
+		socket.on('getUsers', (users) => {
+			setOnlineUsers(users);
+		});
+	}, [ct]);
 	console.log(usersFriends);
 	if (loadingI) {
 		return <Spinner></Spinner>;
@@ -58,7 +76,9 @@ const DrawerExample: React.FC<chatSelectionProps> = ({
 				m={'5px'}
 				// _fullScreen={}
 			>
-				<HamburgerIcon></HamburgerIcon>
+				<HamburgerIcon
+					onClick={() => setCt((prev) => prev + 1)}
+				></HamburgerIcon>
 			</Button>
 			<Drawer
 				isOpen={isOpen}
@@ -91,7 +111,13 @@ const DrawerExample: React.FC<chatSelectionProps> = ({
 									// overflow={'hidden'}
 								>
 									<Box>
-										{' '}
+										{onlineUsers.find(
+											(user) => user.user_id === friend.friendId
+										) && (
+											<Text color={'green'} fontSize={'8px'}>
+												<strong>Online ●</strong>
+											</Text>
+										)}{' '}
 										<Avatar src={`${friend.friendProfile}`}></Avatar>
 										{/* <Avatar src={`${invitation.sender_profile}`}></Avatar> */}
 									</Box>
@@ -102,6 +128,7 @@ const DrawerExample: React.FC<chatSelectionProps> = ({
 										<Text fontSize={'14px'} color="teal">
 											Email: <strong>{friend.friendEmail}</strong>
 										</Text>
+
 										<Text fontSize={'8px'} color="teal">
 											FriendID: <strong>{friend.friendId}</strong>
 										</Text>

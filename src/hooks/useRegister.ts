@@ -26,7 +26,7 @@ export const useRegister = () => {
 		email: string;
 		password: string;
 	}) => {
-		console.log('Registering');
+		// console.log('Registering');
 		setLoading(true);
 		// console.log(process.env.NEXT_PUBLIC_BACKEND);
 		axios
@@ -36,11 +36,11 @@ export const useRegister = () => {
 			)
 			.then((response: AxiosResponse) => {
 				// const json = response.json();
-				console.log('Success\n');
+				// console.log('Success\n');
 				if (response.status === 200) {
 					setLoading(false);
 					setError(false);
-					console.log(response);
+					// console.log(response);
 					toast({
 						title: 'Success',
 						description: `${response.data.message}`,
@@ -65,7 +65,7 @@ export const useRegister = () => {
 				}
 			})
 			.catch((error: any) => {
-				console.log('Fail\n');
+				// console.log('Fail\n');
 				setError(true);
 				setLoading(false);
 				// console.log(error.response.data.message);
@@ -82,7 +82,7 @@ export const useRegister = () => {
 				}
 				toast({
 					title: 'Failure',
-					description: `${error.response.data.message}`,
+					description: `${error.response?.data.message}`,
 					status: 'error',
 					duration: 2000,
 					isClosable: true,

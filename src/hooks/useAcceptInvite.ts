@@ -19,7 +19,7 @@ const useAcceptInvite = () => {
 			)
 			.then((response: AxiosResponse) => {
 				setLoading(false);
-				console.log(response.data);
+				// console.log(response.data);
 				toast({
 					title: 'Adding...',
 					description: 'You are now friends',
@@ -31,11 +31,11 @@ const useAcceptInvite = () => {
 				setLoading(false);
 				toast({
 					title: 'Adding...',
-					description: `${err.response.data.message}`,
+					description: `${err.response?.data.message}`,
 					duration: 2000,
 					status: 'error',
 				});
-				console.log(err.response.data);
+				// console.log(err.response.data);
 			});
 	};
 	return { acceptInvite, loading };

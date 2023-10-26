@@ -32,7 +32,7 @@ const useGetUser = () => {
 				}
 			)
 			.then((response: AxiosResponse) => {
-				console.log(response);
+				// console.log(response);
 				if (response.status != 200) {
 					// setError(Boolean(true));
 					toast({
@@ -54,9 +54,9 @@ const useGetUser = () => {
 				}
 				setrUser(receivedUser);
 				setLoading(false);
-				console.log(response.data);
+				// console.log(response.data);
 				const foundUser: User = response.data;
-				console.log(foundUser);
+				// console.log(foundUser);
 			})
 			.catch((error: any) => {
 				console.log(error);

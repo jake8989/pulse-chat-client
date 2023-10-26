@@ -14,7 +14,7 @@ const useGetAllSentInvitations = () => {
 			})
 			.then((response: AxiosResponse) => {
 				setLoading(false);
-				console.log(response);
+				// console.log(response);
 				setSentInvitations(response.data);
 			})
 			.catch((err: any) => {

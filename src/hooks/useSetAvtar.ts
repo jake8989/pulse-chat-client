@@ -22,23 +22,23 @@ export const useSetAvtar = () => {
 	}, [user]);
 
 	let username = user?.user;
-	console.log(username);
+	// console.log(username);
 	const setAvatar = async (profile: string) => {
-		console.log('Loading');
+		// console.log('Loading');
 		setLoading(true);
 
 		const postData = {
 			profile: profile,
 			username: username,
 		};
-		console.log('postData', postData);
+		// console.log('postData', postData);
 		axios
 			.put(
 				`${process.env.NEXT_PUBLIC_BACKEND}/api/v1/users/set-avtar`,
 				postData
 			)
 			.then((response: AxiosResponse) => {
-				console.log('Success\n');
+				// console.log('Success\n');
 				setLoading(false);
 				setError(false);
 				// console.log(profile);
@@ -66,7 +66,7 @@ export const useSetAvtar = () => {
 				router.push('/chat');
 			})
 			.catch((error: any) => {
-				console.log('fail\n');
+				// console.log('fail\n');
 
 				setError(true);
 				setLoading(false);
@@ -82,7 +82,7 @@ export const useSetAvtar = () => {
 				}
 				toast({
 					title: 'Failure',
-					description: `${error.response.data.message}`,
+					description: `${error.response?.data.message}`,
 					status: 'error',
 					duration: 2000,
 					isClosable: true,

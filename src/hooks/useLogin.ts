@@ -12,17 +12,17 @@ export const useLogin = () => {
 	const [successMessage, seteSuccessMessage] = useState<string>('');
 	const { loginUser } = useUser();
 	const login = async (postData: { username: string; password: string }) => {
-		console.log('Logging');
+		// console.log('Logging');
 		setLoading(true);
 		axios
 			.post(`${process.env.NEXT_PUBLIC_BACKEND}/api/v1/users/login`, postData)
 			.then((response: AxiosResponse) => {
 				// const json = response.json();
-				console.log('Success\n');
+				// console.log('Success\n');
 				if (response.status === 200) {
 					setLoading(false);
 					setError(false);
-					console.log(response);
+					// console.log(response);
 					toast({
 						title: 'Success',
 						description: `${response.data.message}`,
@@ -47,10 +47,11 @@ export const useLogin = () => {
 				}
 			})
 			.catch((error: any) => {
-				console.log('Fail\n');
+				// console.log('Fail\n');
 				setError(true);
 				setLoading(false);
-				console.log(error.response.data.message);
+				// if(error.response)
+				// console.log(error.response?.data.message);
 
 				if (!error.response) {
 					toast({
@@ -64,7 +65,7 @@ export const useLogin = () => {
 				}
 				toast({
 					title: 'Failure',
-					description: `${error.response.data.message}`,
+					description: `${error.response?.data.message}`,
 					status: 'error',
 					duration: 2000,
 					isClosable: true,

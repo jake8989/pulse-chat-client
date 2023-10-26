@@ -31,7 +31,7 @@ const useGetChats = () => {
 				},
 			})
 			.then((response: AxiosResponse) => {
-				console.log(response.data);
+				// console.log(response.data);
 				setLoading(false);
 				setMessages(response.data);
 			})

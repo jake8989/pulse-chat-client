@@ -17,11 +17,11 @@ const useDeleteInvite = () => {
 			)
 			.then((response: AxiosResponse) => {
 				setLoading(false);
-				console.log(response.data);
+				// console.log(response.data);
 			})
 			.catch((err: any) => {
 				setLoading(false);
-				console.log(err.response.data);
+				console.log(err.response?.data);
 			});
 	};
 	return { deleteInvite, loadingI };
