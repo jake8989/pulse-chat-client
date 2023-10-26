@@ -40,6 +40,6 @@ const useGetChats = () => {
 				console.log(err);
 			});
 	};
-	return { getChats, messages, loading };
+	return { getChats, messages, loading, setMessages };
 };
 export default useGetChats;

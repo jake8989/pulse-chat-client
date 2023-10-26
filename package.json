@@ -1,41 +1,42 @@
 {
-  "name": "server-packages",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "@chakra-ui/icons": "^2.1.1",
-    "@chakra-ui/next-js": "^2.1.5",
-    "@chakra-ui/react": "^2.8.1",
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
-    "@types/js-cookie": "^3.0.5",
-    "@types/node": "20.8.3",
-    "@types/react": "18.2.25",
-    "@types/react-dom": "18.2.11",
-    "axios": "^1.5.1",
-    "dotenv": "^16.3.1",
-    "express": "^4.18.2",
-    "framer-motion": "^10.16.4",
-    "js-cookie": "^3.0.5",
-    "mongoose": "^7.6.0",
-    "next": "13.5.4",
-    "nodemon": "^3.0.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-icons": "^4.11.0",
-    "typescript": "^5.2.2"
-  },
-  "description": "This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).",
-  "main": "next.config.js",
-  "directories": {
-    "test": "test"
-  },
-  "author": "",
-  "license": "MIT"
+	"name": "server-packages",
+	"version": "1.0.0",
+	"private": true,
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start",
+		"lint": "next lint"
+	},
+	"dependencies": {
+		"@chakra-ui/icons": "^2.1.1",
+		"@chakra-ui/next-js": "^2.1.5",
+		"@chakra-ui/react": "^2.8.1",
+		"@emotion/react": "^11.11.1",
+		"@emotion/styled": "^11.11.0",
+		"@types/js-cookie": "^3.0.5",
+		"@types/node": "20.8.3",
+		"@types/react": "18.2.25",
+		"@types/react-dom": "18.2.11",
+		"axios": "^1.5.1",
+		"dotenv": "^16.3.1",
+		"express": "^4.18.2",
+		"framer-motion": "^10.16.4",
+		"js-cookie": "^3.0.5",
+		"mongoose": "^7.6.0",
+		"next": "13.5.4",
+		"nodemon": "^3.0.1",
+		"react": "18.2.0",
+		"react-dom": "18.2.0",
+		"react-icons": "^4.11.0",
+		"socket.io-client": "^4.7.2",
+		"typescript": "^5.2.2"
+	},
+	"description": "This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).",
+	"main": "next.config.js",
+	"directories": {
+		"test": "test"
+	},
+	"author": "",
+	"license": "MIT"
 }

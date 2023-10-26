@@ -19,6 +19,7 @@ import { useRef } from 'react';
 import axios from 'axios';
 import cookie from 'js-cookie';
 import { useToast } from '@chakra-ui/react';
+import socket from '@/socket-manager/socket';
 const customTheme = extendTheme({
 	styles: {
 		global: {
@@ -34,12 +35,43 @@ const customTheme = extendTheme({
 });
 interface chatProps {
 	chatId: string;
+	currentFriend: string;
+	currentFriendUsername: string;
 }
-const Chat: React.FC<chatProps> = ({ chatId }) => {
-	const { getChats, messages, loading } = useGetChats();
+interface MessageType {
+	_id: string;
+	chatId: string;
+	sender: string;
+	senderUsername: string;
+	content: string;
+}
+const Chat: React.FC<chatProps> = ({
+	chatId,
+	currentFriend,
+	currentFriendUsername,
+}) => {
+	const { getChats, messages, loading, setMessages } = useGetChats();
 	const toast = useToast();
 	const [newMessage, setNewMessage] = useState<string>('');
+	const [arrivalMessage, setArrivalMessage] = useState<MessageType>({
+		_id: '',
+		chatId: '',
+		sender: '',
+		senderUsername: '',
+		content: '',
+	});
+
 	const [ll, setLL] = useState<boolean>(false);
+	socket.on('chat', (message) => {
+		console.log(message);
+	});
+	const user_id = cookie.get('user_id');
+	useEffect(() => {
+		socket.emit('addUser', user_id);
+		socket.on('getUsers', (users) => {
+			console.log(users);
+		});
+	}, []);
 	useEffect(() => {
 		console.log(chatId);
 	}, [chatId]);
@@ -70,6 +102,12 @@ const Chat: React.FC<chatProps> = ({ chatId }) => {
 			content: newMessage,
 		};
 		setLL(true);
+		const sender_id = cookie.get('user_id');
+		socket.emit('send-message', {
+			sender_id,
+			receiver_id: currentFriend,
+			content: newMessage,
+		});
 		try {
 			const result = await axios.post(
 				`${process.env.NEXT_PUBLIC_BACKEND}/auth/v1/chat/save-chat`,
@@ -83,7 +121,6 @@ const Chat: React.FC<chatProps> = ({ chatId }) => {
 			setLL(false);
 			setNewMessage('');
 			await getChats(chatId);
-			console.log(result.data);
 		} catch (error) {
 			setNewMessage('');
 			setLL(false);
@@ -96,20 +133,48 @@ const Chat: React.FC<chatProps> = ({ chatId }) => {
 			chatRef.current.scrollTop = chatRef.current.scrollHeight;
 		}
 	}, [messages]);
-
+	useEffect(() => {
+		socket.on('get-message', (data) => {
+			setArrivalMessage({
+				_id: 'ArrivalId',
+				chatId: 'ArrivalChatId',
+				sender: data.sender_id,
+				senderUsername: data.senderUsername,
+				content: data.content,
+			});
+		});
+	}, []);
+	useEffect(() => {
+		if (arrivalMessage && currentFriend === arrivalMessage.sender) {
+			setMessages((prev) => [...prev, arrivalMessage]);
+		}
+	}, [arrivalMessage, currentFriend]);
 	return (
 		<ChakraProvider theme={customTheme}>
-			<Box display={'flex'} justifyContent={'center'} mt={'20px'}>
+			<Box
+				display={'flex'}
+				justifyContent={'center'}
+				mt={'20px'}
+				flexDirection={'column'}
+				alignItems={'center'}
+			>
+				<Box>
+					<Text textAlign={'center'} fontSize={'12px'}>
+						{' '}
+						ChatId: {chatId}
+					</Text>
+					<Text textAlign={'center'} fontSize={'14px'} color={'teal'}>
+						{' '}
+						FriendUsername: {currentFriendUsername}
+					</Text>
+				</Box>
+
 				<Card
 					width={'84%'}
 					maxHeight={'500px'}
 					overflowY={'scroll'}
 					ref={chatRef}
 				>
-					<Text textAlign={'center'} fontSize={'12px'}>
-						{' '}
-						ChatId: {chatId}
-					</Text>
 					<CardBody>
 						{/* <Text>Hii</Text>
 					<Text>Hii</Text>
@@ -128,13 +193,18 @@ const Chat: React.FC<chatProps> = ({ chatId }) => {
 							{/* {loading && <Spinner></Spinner>} */}
 							{messages.map((message) => (
 								<Card
+									key={message._id}
 									className={
 										message.sender !== cookies.get('user_id')
 											? chatStyles.receiveMessage
 											: chatStyles.sentMessage
 									}
 								>
-									<Text fontSize={'8px'}>{message.senderUsername}</Text>
+									<Text fontSize={'8px'}>
+										{message.sender === cookies.get('user_id')
+											? 'You'
+											: message.senderUsername}
+									</Text>
 									<Text fontSize={'16px'} textAlign={'left'}>
 										{message.content}
 									</Text>

@@ -20,8 +20,12 @@ import useGetFriends from '@/hooks/useGetFriends';
 import cookie from 'js-cookie';
 interface chatSelectionProps {
 	onChatSelected: (chatId: string) => void;
+	onFriendSelected: (friend_id: string, friend_username: string) => void;
 }
-const DrawerExample: React.FC<chatSelectionProps> = ({ onChatSelected }) => {
+const DrawerExample: React.FC<chatSelectionProps> = ({
+	onChatSelected,
+	onFriendSelected,
+}) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const btnRef = React.useRef<HTMLButtonElement | null>(null);
 	const { getFriends, loadingI, usersFriends } = useGetFriends();
@@ -35,11 +39,14 @@ const DrawerExample: React.FC<chatSelectionProps> = ({ onChatSelected }) => {
 	if (loadingI) {
 		return <Spinner></Spinner>;
 	}
-	const LoadChat = (id: string) => {
+	const LoadChat = (id: string, friend_id: string, friend_username: string) => {
 		console.log(id);
 		onChatSelected(id);
+		onFriendSelected(friend_id, friend_username);
 		onClose();
-		// cookie.set('chat_selected', id, { expires: 7 });
+		cookie.set('chat_selected', id, { expires: 7 });
+		cookie.set('current_friend', friend_id, { expires: 7 });
+		cookie.set('current_friend_username', friend_username, { expires: 7 });
 	};
 
 	return (
@@ -68,7 +75,9 @@ const DrawerExample: React.FC<chatSelectionProps> = ({ onChatSelected }) => {
 						{usersFriends.map((friend) => (
 							<Box
 								key={friend._id}
-								onClick={(e) => LoadChat(friend._id)}
+								onClick={(e) =>
+									LoadChat(friend._id, friend.friendId, friend.friendUsername)
+								}
 								cursor={'pointer'}
 							>
 								<Box

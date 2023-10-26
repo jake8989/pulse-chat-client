@@ -16,6 +16,8 @@ export const useLogout = () => {
 		cookie.remove('user_step');
 		cookie.remove('chat_selected');
 		cookie.remove('user_id');
+		cookie.remove('current_friend');
+		cookie.remove('current_friend_username');
 		logoutUser();
 		router.push('/');
 		toast({
