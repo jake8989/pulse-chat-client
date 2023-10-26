@@ -1,0 +1,19 @@
+.sentMessage {
+	width: max-content;
+	max-width: 400px;
+	padding: 10px;
+	background-color: teal !important;
+	color: white !important;
+	/* background: teal; */
+	border-radius: 0px 10px 10px 10px !important;
+	align-self: flex-start;
+	margin-top: 10px;
+}
+.receiveMessage {
+	width: max-content;
+	max-width: max-content;
+	padding: 10px;
+	border-radius: 10px 0px 10px 10px !important;
+	margin-top: 10px;
+	align-self: flex-end;
+}

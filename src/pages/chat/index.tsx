@@ -122,7 +122,7 @@ export default function Chat() {
 					>
 						Go To Friends
 					</Button>
-					<Button ml={'10px'} colorScheme="teal">
+					<Button ml={'10px'} colorScheme="blue" style={{ cursor: 'none' }}>
 						{user?.user}
 					</Button>
 					<Button ml={'10px'} onClick={handleLogout}>

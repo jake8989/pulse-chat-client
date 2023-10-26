@@ -33,6 +33,7 @@ export const useLogin = () => {
 					cookie.set('token', response.data.token, { expires: 7 });
 					loginUser(response.data);
 					cookie.set('user_step', response.data.step, { expires: 7 });
+					cookie.set('user_id', response.data._id, { expires: 7 });
 					router.push('/dashboard');
 				} else {
 					setError(true);

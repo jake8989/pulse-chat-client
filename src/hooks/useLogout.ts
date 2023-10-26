@@ -14,6 +14,8 @@ export const useLogout = () => {
 	const logout = () => {
 		cookie.remove('token');
 		cookie.remove('user_step');
+		cookie.remove('chat_selected');
+		cookie.remove('user_id');
 		logoutUser();
 		router.push('/');
 		toast({

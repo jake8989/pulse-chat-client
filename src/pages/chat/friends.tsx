@@ -24,16 +24,28 @@ import { useLogout } from '@/hooks/useLogout';
 import DrawerExample from '@/components/drawer';
 import cookie from 'js-cookie';
 import { useToast } from '@chakra-ui/react';
+import Chat from '@/components/Chat';
 const Friends = () => {
 	const router = useRouter();
 	const { user, logoutUser } = useUser();
 	const { logout } = useLogout();
 	const toast = useToast();
+	let [currentChat, setCurrentChat] = useState<string>('');
 	const handleLogout = () => {
 		logout();
 	};
+	const handleChatSelection = (chatId: string) => {
+		setCurrentChat(chatId);
+		cookie.set('chat_selected', chatId, { expires: 7 });
+		// console.log(currentChat);
+	};
+
 	useEffect(() => {
 		const url = cookie.get('user_step');
+		const id = cookie.get('chat_selected');
+		if (id) {
+			setCurrentChat(id);
+		}
 		if (!url) {
 			toast({
 				title: 'Error',
@@ -62,8 +74,17 @@ const Friends = () => {
 				{/* </Box> */}
 			</Heading>
 			<Text>
-				<DrawerExample></DrawerExample>
+				<DrawerExample onChatSelected={handleChatSelection}></DrawerExample>
 			</Text>
+			<Box>
+				{currentChat ? (
+					<Chat chatId={currentChat}></Chat>
+				) : (
+					<Text textAlign={'center'} fontSize={'18px'} mt={'10px'}>
+						Start Chatting With Your Friends 😎🙌
+					</Text>
+				)}
+			</Box>
 		</>
 	);
 };
