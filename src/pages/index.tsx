@@ -7,7 +7,8 @@ import { LinkIcon } from '@chakra-ui/icons';
 import User from '@/components/user';
 import LoadingScreen from '@/components/loadinScreen';
 const inter = Inter({ subsets: ['latin'] });
-
+import { AiOutlineWechat } from 'react-icons/ai';
+import { Footer } from '@/components/footer';
 export default function Home() {
 	return (
 		<>
@@ -18,15 +19,14 @@ export default function Home() {
 					</Head>
 				</div>
 				<Container mt={7}>
-					<Heading textAlign={'center'}>
-						PulseChat <LinkIcon w={6} h={6}></LinkIcon>{' '}
-					</Heading>
+					<Heading textAlign={'center'}>PulseChat</Heading>
 					{/* <Text textAlign={'center'}>Chat in groups with friend's</Text> */}
 				</Container>
 				<Container mt={20}>
 					<User></User>
 				</Container>
 				{/* <LoadingScreen></LoadingScreen> */}
+				<Footer></Footer>
 			</main>
 		</>
 	);

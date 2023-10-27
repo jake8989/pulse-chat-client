@@ -6,6 +6,7 @@ import { extendTheme, Button } from '@chakra-ui/react';
 import { UserProvider } from '@/context/UserContext';
 // 2. Extend the theme to include custom colors, fonts, etc
 import Head from 'next/head';
+// import { Footer } from '@/components/footer';
 const colors = {
 	brand: {
 		900: '#1a365d',
@@ -26,6 +27,7 @@ export default function App({ Component, pageProps }: AppProps) {
 				{/* <Head></Head> */}
 				{/* <Button>Logout</Button> */}
 				<Component {...pageProps} />
+				{/* <Footer></Footer> */}
 			</ChakraProvider>
 		</UserProvider>
 	);
