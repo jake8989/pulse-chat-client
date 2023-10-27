@@ -194,6 +194,7 @@ const Chat: React.FC<chatProps> = ({
 							{messages.map((message) => (
 								<Card
 									key={message._id}
+									maxWidth={'70%'}
 									className={
 										message.sender !== cookies.get('user_id')
 											? chatStyles.receiveMessage
