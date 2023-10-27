@@ -1,7 +1,9 @@
 import useGetAllSentInvitations from '@/hooks/useGetAllSentInvitations';
 import { Box } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
-import { Text, Avatar, Spinner } from '@chakra-ui/react';
+import { Text, Avatar, Spinner, Button } from '@chakra-ui/react';
+import { DeleteIcon } from '@chakra-ui/icons';
+
 interface sentInvitaionsProps {
 	sentInvitaions: Array<{
 		invitation_id: string;
@@ -21,6 +23,8 @@ const SentInvitations: React.FC<sentInvitaionsProps> = ({
 	if (loadingI) {
 		return <Spinner></Spinner>;
 	}
+	// const { deleteInvite } = useDeleteInvite();
+
 	return sentInvitaions.map((invitation: any) => (
 		<Box
 			border={'1px solid teal'}
@@ -30,10 +34,11 @@ const SentInvitations: React.FC<sentInvitaionsProps> = ({
 			key={invitation.invitation_id}
 			// overflow={'hidden'}
 		>
-			<Box>
+			<Box display={'flex'}>
 				{' '}
 				<Avatar src={`${invitation.receiver_profile}`}></Avatar>
 				{/* <Avatar src={`${invitation.sender_profile}`}></Avatar> */}
+				<Box position={'absolute'} right={'20px'}></Box>
 			</Box>
 
 			<Text fontSize={'10px'}>
@@ -46,6 +51,7 @@ const SentInvitations: React.FC<sentInvitaionsProps> = ({
 					{invitation.receiver_username}
 				</strong>{' '}
 			</Text>
+
 			{/* <Text fontSize={'10px'}>
 				{' '}
 				Status: <strong color="teal">PENDING</strong>{' '}
