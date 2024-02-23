@@ -176,19 +176,6 @@ const Chat: React.FC<chatProps> = ({
 					ref={chatRef}
 				>
 					<CardBody>
-						{/* <Text>Hii</Text>
-					<Text>Hii</Text>
-					<Text>Hii</Text>
-					<Text>Hii</Text>
-					<Text>Hii</Text>
-					<Text>Hii</Text>
-					<Text>Hii</Text>
-					<Text>Hii</Text>
-					<Text>Hii</Text>
-					<Text>Hii</Text>
-					<Text>Hii</Text>
-					<Text>Hii</Text>
-					<Text>Hii</Text> */}
 						<Box display={'flex'} flexDirection={'column'}>
 							{/* {loading && <Spinner></Spinner>} */}
 							{messages.map((message) => (
